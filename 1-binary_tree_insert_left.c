@@ -10,36 +10,34 @@
  */
 binary_tree_t *binary_tree_insert_left(binary_tree_t *parent, int value)
 {
-    // Step 1: Check if the parent node is NULL
-    if (parent == NULL)
-    {
-        return (NULL);
-    }
+	binary_tree_t *node_to_be_created;
+	binary_tree_t *store;
 
-    // Step 2: Create a new node with the provided value and parent
-    binary_tree_t *node_to_create = binary_tree_node(parent, value);
-    if (node_to_create == NULL)
-    {
-        return (NULL);
-    }
+	if (parent == NULL)
+     {
+		return (NULL);
+     }
 
-    node_to_create->n = value;
-    node_to_create->left = NULL;
-    node_to_create->right = NULL;
-
-    if (parent->left == NULL)
-    {
-        parent->left = node_to_create;
-        node_to_create->parent = parent;
-    }
-    else
-    {
-     binary_tree_t *store = parent->left;
-     parent->left = node_to_create;
-     node_to_create->left = store;
-     node_to_create->parent = parent;
-	store->parent = node_to_create;
-
-    }
-    return (node_to_create);
+	node_to_be_created = malloc(sizeof(binary_tree_t));
+	if (node_to_be_created == NULL)
+     {
+		return (NULL);
+     }
+	node_to_be_created->n = value;
+	node_to_be_created->parent = parent;
+	node_to_be_created->right = NULL;
+	if (parent->left)
+	{
+		store = parent->left;
+		parent->left = node_to_be_created;
+		node_to_be_created->left = store;
+		store->parent = node_to_be_created;
+	}
+	else
+	{
+		parent->left = node_to_be_created;
+		node_to_be_created->left = NULL;
+	}
+	return (node_to_be_created);
 }
+
