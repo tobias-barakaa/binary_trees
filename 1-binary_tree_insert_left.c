@@ -1,51 +1,45 @@
 #include "binary_trees.h"
-#include <stdio.h>
-#include <stdlib.h>
-/**
- * binary_tree_insert_left - Function that inserts a node as the left-child
- * of another node
- *
- * @parent: Pointer to parent of node to create
- * @value: Value to insert in the desired node
- * Return: Pointer to the new node
- */
 
+/**
+ * binary_tree_insert_left - Inserts a node as the left-child of another node
+ *
+ * @parent: Pointer to the node to insert the left-child in
+ * @value: Value to store in the new node
+ *
+ * Return: Pointer to the created node, or NULL on failure or if parent is NULL
+ */
 binary_tree_t *binary_tree_insert_left(binary_tree_t *parent, int value)
 {
+    // Step 1: Check if the parent node is NULL
+    if (parent == NULL)
+    {
+        return (NULL);
+    }
 
-	binary_tree_t *newnode;
-	binary_tree_t *temp;
+    // Step 2: Create a new node with the provided value and parent
+    binary_tree_t *node_to_create = binary_tree_node(parent, value);
+    if (node_to_create == NULL)
+    {
+        return (NULL);
+    }
 
-	(void) (*newnode);
-	(void) (value);
+    node_to_create->n = value;
+    node_to_create->left = NULL;
+    node_to_create->right = NULL;
 
-	if (parent == NULL)
-		return (NULL);
+    if (parent->left == NULL)
+    {
+        parent->left = node_to_create;
+        node_to_create->parent = parent;
+    }
+    else
+    {
+     binary_tree_t *store = parent->left;
+     parent->left = node_to_create;
+     node_to_create->left = store;
+     node_to_create->parent = parent;
+	store->parent = node_to_create;
 
-	newnode = malloc(sizeof(binary_tree_t));
-
-	if (newnode == NULL)
-		return (NULL);
-
-	newnode->n = value;
-	newnode->left = NULL;
-	newnode->right = NULL;
-
-	if (parent->left == NULL)
-	{
-		parent->left = newnode;
-		newnode->parent = parent;
-	}
-	else
-	{
-		temp = parent->left;
-		parent->left = newnode;
-		newnode->left = temp;
-		newnode->parent = parent;
-		temp->parent = newnode;
-
-	}
-
-return (newnode);
-
+    }
+    return (node_to_create);
 }
