@@ -97,4 +97,3 @@ void binary_tree_print(const binary_tree_t *tree)
 	}
 	free(s);
 }
-
