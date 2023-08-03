@@ -12,31 +12,31 @@
  */
 int binary_tree_is_complete(const binary_tree_t *tree)
 {
-    if (!tree)
+    int flag = 0; // Flag to indicate if a NULL node is encountered
+    binary_tree_t *queue[1024] = {NULL}; // Queue for level-order traversal
+    int front = 0, rear = 0; // Pointers for front and rear of the queue
+
+    if (!tree) // If tree is NULL, it's not complete
         return (0);
 
-    binary_tree_t *queue[1024] = {NULL};
-    int front = 0, rear = 0;
-    int flag = 0;
-
-    queue[rear++] = (binary_tree_t *)tree;
+    queue[rear++] = (binary_tree_t *)tree; // Enqueue the root
 
     while (front < rear)
     {
-        binary_tree_t *current = queue[front++];
+        binary_tree_t *current = queue[front++]; // Dequeue the front node
 
         if (current)
         {
             if (flag)
-                return (0);
+                return (0); // If a NULL node was encountered previously, return 0
 
-            queue[rear++] = current->left;
-            queue[rear++] = current->right;
+            queue[rear++] = current->left; // Enqueue left child
+            queue[rear++] = current->right; // Enqueue right child
         }
         else
-            flag = 1;
+            flag = 1; // Set flag to indicate a NULL node was encountered
     }
 
-    return (1);
+    return (1); // If no issues, the tree is complete
 }
 
