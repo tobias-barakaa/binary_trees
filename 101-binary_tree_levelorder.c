@@ -1,56 +1,67 @@
+#include "binary_trees.h"
+
 /**
- * binary_tree_levelorder - Traverse a binary tree using level-order traversal
+ * recursive_height - measures the height of a binary tree
  *
- * This function performs a level-order traversal of a binary tree. It starts
- * from the root node and visits each level of the tree before moving to the next
- * level. The given function is called for each visited node, and the value of
- * the node is passed as a parameter to the function.
+ * @tree: tree root
+ * Return: height
+ */
+size_t recursive_height(const binary_tree_t *tree)
+{
+	size_t left = 0;
+	size_t right = 0;
+
+	if (tree == NULL)
+		return (0);
+
+	left = recursive_height(tree->left);
+	right = recursive_height(tree->right);
+
+	if (left > right)
+		return (left + 1);
+
+	return (right + 1);
+}
+
+/**
+ * print_level - prints nodes at the same level
  *
- * @tree: Pointer to the root node of the tree to traverse
- * @func: Pointer to a function to call for each node's value
+ * @tree: tree root
+ * @level: level node
+ * @func: pointer to a function
+ * Return: no return
+ */
+void print_level(const binary_tree_t *tree, int level, void (*func)(int))
+{
+	if (tree == NULL)
+		return;
+
+	if (level == 1)
+		func(tree->n);
+	else if (level > 1)
+	{
+		print_level(tree->left, level - 1, func);
+		print_level(tree->right, level - 1, func);
+	}
+}
+
+/**
+ * binary_tree_levelorder - prints data in level-order traversal
+ *
+ * @tree: tree root
+ * @func: pointer to a function
+ * Return: no return
  */
 void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int))
 {
-    // Check if either the tree pointer or the func pointer is NULL
-    if (tree == NULL || func == NULL)
-        return; // If either is NULL, return immediately, as traversal cannot proceed.
+	size_t height;
+	size_t i;
 
-    /* Create a queue for level-order traversal */
+	if (tree == NULL || func == NULL)
+		return;
 
-    // Allocate memory for a queue to store the nodes during traversal.
-    // The queue is implemented as an array of pointers to binary_tree_t nodes.
-    // In this code, the queue has a fixed size of 1024, which limits the number
-    // of nodes that can be traversed in a single level-order traversal.
-    binary_tree_t **queue = malloc(sizeof(binary_tree_t *) * 1024);
-    if (queue == NULL)
-        return; // Return if memory allocation fails.
+	height = recursive_height(tree);
 
-    int front = 0, rear = 0; // Initialize variables to keep track of the front and rear ends of the queue.
-
-    queue[rear++] = (binary_tree_t *)tree; // Enqueue the root node into the queue.
-
-    // Start the level-order traversal using a while loop.
-    // The traversal continues as long as there are nodes in the queue to be processed.
-    while (front < rear)
-    {
-        // Dequeue the front node from the queue for processing.
-        binary_tree_t *current = queue[front++];
-        
-        // Call the given function (func) with the value (n) of the current node.
-        func(current->n);
-
-        // Check if the current node has a left child.
-        if (current->left)
-            // If it has a left child, enqueue the left child into the queue and increment rear.
-            queue[rear++] = current->left;
-
-        // Check if the current node has a right child.
-        if (current->right)
-            // If it has a right child, enqueue the right child into the queue and increment rear.
-            queue[rear++] = current->right;
-    }
-
-    // Free the memory allocated for the queue using free(queue).
-    free(queue);
+	for (i = 1; i <= height; i++)
+		print_level(tree, i, func);
 }
-
