@@ -1,33 +1,81 @@
 #include "binary_trees.h"
 
 /**
- * binary_tree_levelorder - Perform level-order traversal of a binary tree
- * @tree: Pointer to the root node of the tree to traverse
- * @func: Pointer to a function to call for each node's value
+ * heightt - Determines the height of a binary tree
  *
- * This function performs a level-order traversal of a binary tree. It visits
- * each node level by level and calls the given function for each node's value.
+ * @tree: Tree root
+ * Return: Height of the tree
+ */
+size_t heightt(const binary_tree_t *tree)
+{
+    size_t left = 0;
+    size_t right = 0;
+
+    if (tree == NULL)
+    {
+        return (0);
+    }
+
+    left = heightt(tree->left);
+    right = heightt(tree->right);
+
+    if (left > right)
+    {
+        return (left + 1); // Return the height of the left subtree + 1
+    }
+
+    return (right + 1); // Return the height of the right subtree + 1
+}
+
+/**
+ * node_execute_same_line - Prints nodes at the same level
+ *
+ * @tree: Tree root
+ * @select: Level of nodes to print
+ * @func: Pointer to a function
+ * Return: No return
+ */
+void node_execute_same_line(const binary_tree_t *tree, int select, void (*func)(int))
+{
+    if (tree == NULL)
+    {
+        return;
+    }
+
+    if (select == 1)
+    {
+        func(tree->n); /* Call the given function on the value of the current node */
+    }
+    else if (select > 1)
+    {
+        // Recursively call the function for left and right subtrees at the next level
+        node_execute_same_line(tree->left, select - 1, func);
+        node_execute_same_line(tree->right, select - 1, func);
+    }
+}
+
+/**
+ * binary_tree_levelorder - Traverse binary tree level by level
+ * @tree: Root of the tree to traverse
+ * @func: Pointer to a function to call for each node's value
+ * Return: No return
  */
 void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int))
 {
-    if (!tree || !func)
-        return;
+    size_t height;
+    size_t key;
 
-    binary_tree_t *queue[1024] = {NULL};
-    int front = 0, rear = 0;
-
-    queue[rear++] = (binary_tree_t *)tree;
-
-    while (front < rear)
+    if (tree == NULL || func == NULL)
     {
-        binary_tree_t *current = queue[front++];
-        func(current->n);
+        return;
+    }
 
-        if (current->left)
-            queue[rear++] = current->left;
+    height = heightt(tree); /* Get the height of the tree */
 
-        if (current->right)
-            queue[rear++] = current->right;
+    for (key = 1; key <= height; key++)
+    {
+        /* Call the function for nodes at the current level*/
+        node_execute_same_line(tree, key, func);
     }
 }
 
