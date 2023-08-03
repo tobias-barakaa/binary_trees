@@ -1,113 +1,56 @@
-#include "binary_trees.h"
 /**
- * new_node - Function that creates a new_node in a linked_list
- * @node: Type pointer of node to be created
- * Return: the node created
+ * binary_tree_levelorder - Traverse a binary tree using level-order traversal
+ *
+ * This function performs a level-order traversal of a binary tree. It starts
+ * from the root node and visits each level of the tree before moving to the next
+ * level. The given function is called for each visited node, and the value of
+ * the node is passed as a parameter to the function.
+ *
+ * @tree: Pointer to the root node of the tree to traverse
+ * @func: Pointer to a function to call for each node's value
  */
-link_t *new_node(binary_tree_t *node)
+void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int))
 {
-	link_t *new;
+    // Check if either the tree pointer or the func pointer is NULL
+    if (tree == NULL || func == NULL)
+        return; // If either is NULL, return immediately, as traversal cannot proceed.
 
-	new =  malloc(sizeof(link_t));
-	if (new == NULL)
-	{
-		return (NULL);
-	}
-	new->node = node;
-	new->next = NULL;
+    /* Create a queue for level-order traversal */
 
-	return (new);
+    // Allocate memory for a queue to store the nodes during traversal.
+    // The queue is implemented as an array of pointers to binary_tree_t nodes.
+    // In this code, the queue has a fixed size of 1024, which limits the number
+    // of nodes that can be traversed in a single level-order traversal.
+    binary_tree_t **queue = malloc(sizeof(binary_tree_t *) * 1024);
+    if (queue == NULL)
+        return; // Return if memory allocation fails.
+
+    int front = 0, rear = 0; // Initialize variables to keep track of the front and rear ends of the queue.
+
+    queue[rear++] = (binary_tree_t *)tree; // Enqueue the root node into the queue.
+
+    // Start the level-order traversal using a while loop.
+    // The traversal continues as long as there are nodes in the queue to be processed.
+    while (front < rear)
+    {
+        // Dequeue the front node from the queue for processing.
+        binary_tree_t *current = queue[front++];
+        
+        // Call the given function (func) with the value (n) of the current node.
+        func(current->n);
+
+        // Check if the current node has a left child.
+        if (current->left)
+            // If it has a left child, enqueue the left child into the queue and increment rear.
+            queue[rear++] = current->left;
+
+        // Check if the current node has a right child.
+        if (current->right)
+            // If it has a right child, enqueue the right child into the queue and increment rear.
+            queue[rear++] = current->right;
+    }
+
+    // Free the memory allocated for the queue using free(queue).
+    free(queue);
 }
-/**
- * free_q - Function that free the nodes at the linked list
- * @head: Node of the linked_list
- */
-void free_q(link_t *head)
-{
-	link_t *temp_node;
 
-	while (head)
-	{
-		temp_node = head->next;
-		free(head);
-		head = temp_node;
-	}
-}
-/**
- * _push - Function that pushes a node into the stack
- * @node: Type pointer of node of the tree
- * @head: Type head node of in the stack
- * @tail: Type tail node of in the stack
- */
-void _push(binary_tree_t *node, link_t *head, link_t **tail)
-{
-	link_t *new;
-
-	new = new_node(node);
-	if (new == NULL)
-	{
-		free_q(head);
-		exit(1);
-	}
-	(*tail)->next = new;
-	*tail = new;
-}
-/**
- * _pop - Function that pops a node into the stack
- * @head: Type head node of in the stack
- */
-void _pop(link_t **head)
-{
-	link_t *temp_node;
-
-	temp_node = (*head)->next;
-	free(*head);
-	*head = temp_node;
-}
-/**
- * binary_tree_is_complete - Function that checks if a binary tree is complete
- * @tree: Type pointer of node of the tree
- * Return: 1 if is complete 0 if it is not
- */
-int binary_tree_is_complete(const binary_tree_t *tree)
-{
-	link_t *head, *tail;
-	int flag = 0;
-
-	if (tree == NULL)
-	{
-		return (0);
-	}
-	head = tail = new_node((binary_tree_t *)tree);
-	if (head == NULL)
-	{
-		exit(1);
-	}
-	while (head != NULL)
-	{
-		if (head->node->left != NULL)
-		{
-			if (flag == 1)
-			{
-				free_q(head);
-				return (0);
-			}
-			_push(head->node->left, head, &tail);
-		}
-		else
-			flag = 1;
-		if (head->node->right != NULL)
-		{
-			if (flag == 1)
-			{
-				free_q(head);
-				return (0);
-			}
-			_push(head->node->right, head, &tail);
-		}
-		else
-			flag = 1;
-		_pop(&head);
-	}
-	return (1);
-}
