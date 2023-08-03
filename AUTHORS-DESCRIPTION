@@ -1,0 +1,19 @@
+Project Description:
+
+The project, titled "Binary Trees in C," involved the implementation of various operations related to binary trees using the C programming language. Binary trees are hierarchical data structures that consist of nodes, each having at most two children, and they are fundamental in computer science and programming.
+
+Abdia Elema Gababo and Baraka Ngaira collaborated on this project, combining their knowledge and expertise to tackle the challenges involved in working with binary trees. They demonstrated exceptional coding skills, attention to detail, and a strong understanding of the C language and data structures.
+
+To successfully complete the project, Abdia and Baraka followed strict guidelines and requirements set forth by the project specifications. They utilized allowed editors, such as vi, vim, or emacs, to write their code, ensuring consistency and readability. The code was compiled on Ubuntu 20.04 LTS using gcc with specific options to detect potential errors and warnings during the compilation process.
+
+To maintain a clean and organized codebase, Abdia and Baraka adhered to the Betty style, a standardized coding style for the C language. This practice enhanced code readability and made it easier for their peers to review and understand their work.
+
+Throughout the project, Abdia and Baraka actively collaborated, discussing ideas, and sharing insights. They worked diligently to ensure that the project was original, and strict adherence to the plagiarism policy was maintained.
+
+The project required the implementation of various functions related to binary trees, and Abdia and Baraka divided the work accordingly, ensuring that no source code file exceeded the maximum allowed number of functions. They utilized the standard library when necessary, and all function prototypes were included in the header file named "binary_trees.h."
+
+Abdia and Baraka leveraged their knowledge of binary trees to create and work with different types of binary tree data structures, including Basic Binary Trees, Binary Search Trees (BST), AVL Trees, and Max Binary Heaps. They used the provided print function for visualization purposes, ensuring their implementations matched the given examples.
+
+Finally, Abdia and Baraka maintained a single project repository as required by the project guidelines. Their dedication, teamwork, and commitment to excellence resulted in a successful project that showcased their proficiency in C programming and binary tree data structures.
+
+Overall, Abdia Elema Gababo and Baraka Ngaira's joint effort made this project a great success, exemplifying their skills as programmers and their ability to work collaboratively on complex programming tasks.
